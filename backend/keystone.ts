@@ -6,9 +6,12 @@ import {
   withItemData,
 } from '@keystone-next/keystone/session';
 import { User } from './schemas/User';
+import { Product } from './schemas/Product';
+import { ProductImage } from './schemas/ProductImage';
+import { insertSeedData } from './seed-data';
 
 const databaseUrl = process.env.DATABASE_URL;
-console.log(databaseUrl);
+
 const sessionConfig = {
   maxAge: 60 * 60 * 24 * 360, // How long should they stay signed in
   secret: process.env.COOKIE_SECRET,
@@ -36,10 +39,18 @@ export default withAuth(
       adapter: 'mongoose',
       url: databaseUrl,
       // TODO: Add data seeding here
+      async onConnect(keystone) {
+        console.log('Connected to the database.');
+        if (process.argv.includes('--seed-data')) {
+          await insertSeedData(keystone);
+        }
+      },
     },
     lists: createSchema({
       // Schema items go in here
       User,
+      Product,
+      ProductImage,
     }),
     ui: {
       // Show UI only to people who pass this test
