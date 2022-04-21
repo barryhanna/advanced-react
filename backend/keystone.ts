@@ -1,15 +1,14 @@
 import { createAuth } from '@keystone-next/auth';
 import { config, createSchema } from '@keystone-next/keystone/schema';
-import { User } from './schemas/User';
 import 'dotenv/config';
 import {
   statelessSessions,
   withItemData,
 } from '@keystone-next/keystone/session';
+import { User } from './schemas/User';
 
-const databaseUrl =
-  process.env.DATABASE_URL || 'mongodb://localhost/keystone-sick-fits-tutorial';
-
+const databaseUrl = process.env.DATABASE_URL;
+console.log(databaseUrl);
 const sessionConfig = {
   maxAge: 60 * 60 * 24 * 360, // How long should they stay signed in
   secret: process.env.COOKIE_SECRET,
@@ -51,7 +50,7 @@ export default withAuth(
     },
     // TODO: Add session values here
     session: withItemData(statelessSessions(sessionConfig), {
-      User: `id`,
+      User: 'id',
     }),
   })
 );

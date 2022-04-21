@@ -4,14 +4,14 @@ import { KeystoneProvider } from '@keystone-next/admin-ui/context';
 import { ErrorBoundary } from '@keystone-next/admin-ui/components';
 import { Core } from '@keystone-ui/core';
 
-import * as view325e6176 from '../../../node_modules/@keystone-next/fields/types/mongoId/views';
-import * as viewbfa04018 from '../../../node_modules/@keystone-next/fields/types/text/views';
-import * as view8e3bf25d from '../../../node_modules/@keystone-next/fields/types/password/views';
-import * as viewd21b8cb3 from '../../../node_modules/@keystone-next/fields/types/timestamp/views';
+import * as viewd5c6b45a from '../../../node_modules/@keystone-next/fields/types/mongoId/views';
+import * as view6d1153cf from '../../../node_modules/@keystone-next/fields/types/text/views';
+import * as view6a8b14d5 from '../../../node_modules/@keystone-next/fields/types/password/views';
+import * as view46c26500 from '../../../node_modules/@keystone-next/fields/types/timestamp/views';
 
 const adminConfig = {};
 
-const fieldViews = { view325e6176, viewbfa04018, view8e3bf25d, viewd21b8cb3 };
+const fieldViews = { viewd5c6b45a, view6d1153cf, view6a8b14d5, view46c26500 };
 
 const lazyMetadataQuery = {
   kind: 'Document',
@@ -185,7 +185,7 @@ export default function App({ Component, pageProps }) {
     <Core>
       <KeystoneProvider
         adminConfig={adminConfig}
-        adminMetaHash="1qop4ak"
+        adminMetaHash="14t1x9i"
         fieldViews={fieldViews}
         lazyMetadataQuery={lazyMetadataQuery}
       >
