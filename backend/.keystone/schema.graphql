@@ -668,6 +668,7 @@ input OrderItemRelateToManyInput {
 """ A keystone list """
 type Order {
   id: ID!
+  label: String
   total: Int
   items(where: OrderItemWhereInput, search: String, sortBy: [SortOrderItemsBy!], orderBy: String, first: Int, skip: Int): [OrderItem!]!
   _itemsMeta(where: OrderItemWhereInput, search: String, sortBy: [SortOrderItemsBy!], orderBy: String, first: Int, skip: Int): _QueryMeta
@@ -1142,6 +1143,7 @@ type Mutation {
   sendUserPasswordResetLink(email: String!): SendUserPasswordResetLinkResult
   redeemUserPasswordResetToken(email: String!, token: String!, password: String!): RedeemUserPasswordResetTokenResult
   addToCart(productId: ID): CartItem
+  checkout(token: String!): Order
   endSession: Boolean!
 }
 

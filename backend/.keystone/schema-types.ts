@@ -930,7 +930,7 @@ export type OrderItemListFn = (
 
 export type OrderListTypeInfo = {
   key: 'Order';
-  fields: 'id' | 'total' | 'items' | 'user' | 'charge';
+  fields: 'id' | 'label' | 'total' | 'items' | 'user' | 'charge';
   backing: {
     readonly id: string;
     readonly total?: number | null;
