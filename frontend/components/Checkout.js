@@ -1,16 +1,16 @@
-import { useMutation } from '@apollo/client';
+import styled from 'styled-components';
+import { loadStripe } from '@stripe/stripe-js';
 import {
   CardElement,
   Elements,
   useElements,
   useStripe,
 } from '@stripe/react-stripe-js';
-import { loadStripe } from '@stripe/stripe-js';
-import { GraphQLError, Token } from 'graphql';
-import gql from 'graphql-tag';
-import nProgress from 'nprogress';
 import { useState } from 'react';
-import styled from 'styled-components';
+import nProgress from 'nprogress';
+import gql from 'graphql-tag';
+import { useMutation } from '@apollo/client';
+import { Router, useRouter } from 'next/dist/client/router';
 import SickButton from './styles/SickButton';
 import { useCart } from '../lib/cartState';
 import { CURRENT_USER_QUERY } from './User';
@@ -18,9 +18,10 @@ import { CURRENT_USER_QUERY } from './User';
 const CheckoutFormStyles = styled.form`
   box-shadow: 0 1px 2px 2px rgba(0, 0, 0, 0.04);
   border: 1px solid rgba(0, 0, 0, 0.06);
+  border-radius: 5px;
   padding: 1rem;
   display: grid;
-  gap: 1rem;
+  grid-gap: 1rem;
 `;
 
 const CREATE_ORDER_MUTATION = gql`
@@ -52,25 +53,24 @@ function CheckoutForm() {
       refetchQueries: [{ query: CURRENT_USER_QUERY }],
     }
   );
-
   async function handleSubmit(e) {
-    // 1. Stop form from submitting and turn the load on
+    // 1. Stop the form from submitting and turn the loader one
     e.preventDefault();
     setLoading(true);
-    console.log('We gotta do some work');
+    console.log('We gotta do some work..');
     // 2. Start the page transition
     nProgress.start();
-    // 3. Create the payment method via Stripe (Token comes back here if successful)
+    // 3. Create the payment method via stripe (Token comes back here if successful)
     const { error, paymentMethod } = await stripe.createPaymentMethod({
       type: 'card',
       card: elements.getElement(CardElement),
     });
     console.log(paymentMethod);
-    // 4. Handle any errors from Stripe
+    // 4. Handle any errors from stripe
     if (error) {
       setError(error);
       nProgress.done();
-      return;
+      return; // stops the checkout from happening
     }
     // 5. Send the token from step 3 to our keystone server, via a custom mutation!
     const order = await checkout({
@@ -78,7 +78,7 @@ function CheckoutForm() {
         token: paymentMethod.id,
       },
     });
-    console.log(`Finished with the order!!!`);
+    console.log(`Finished with the order!!`);
     console.log(order);
     // 6. Change the page to view the order
     router.push({
@@ -89,7 +89,8 @@ function CheckoutForm() {
     });
     // 7. Close the cart
     closeCart();
-    // 8. Turn the loader off
+
+    // 8. turn the loader off
     setLoading(false);
     nProgress.done();
   }
@@ -112,4 +113,4 @@ function Checkout() {
   );
 }
 
-export default Checkout;
+export { Checkout };
